@@ -1,10 +1,11 @@
 import { Button } from 'bootstrap'
 import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {auth} from '../firebaseconfig'
 
 const Menu = () => {
 
+    const historial = useHistory();
     const [usuario, setUsuario] = useState(null)
 
     useEffect( () => {
@@ -18,6 +19,7 @@ const Menu = () => {
     const cerrarSesion = () => {
         auth.signOut()
         setUsuario(null)
+        historial.push('/');
     }
 
     return (
@@ -28,10 +30,29 @@ const Menu = () => {
                         <Link className='nav-link' to='/'>Inicio</Link>
                     </li>
                     <li className='nav-item'>
+                    {
+                    !usuario ? 
+                    (
                         <Link className='nav-link' to='/login'>Login</Link>
+                    )
+                    : 
+                    (
+                        <span></span>
+                    )
+                }
                     </li>
                     <li className='nav-item'>
+                    {
+                    !usuario ? 
+                    (
                         <Link className='nav-link' to='/admin'>Admin</Link>
+                    )
+                    : 
+                    (
+                        <span></span>
+                    )
+                }
+                        
                     </li>
                 </ul>
                 {

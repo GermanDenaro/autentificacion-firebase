@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import {auth} from '../firebaseconfig'
+import {useHistory} from 'react-router-dom'
 
 
 const Login = () => {
+    const historial = useHistory();
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [msgerror, setMsgError] = useState(null);
@@ -10,7 +12,9 @@ const Login = () => {
     const registrarUsuario = (e) =>{
         e.preventDefault()       
         auth.createUserWithEmailAndPassword(email, pass)
-            .then ( r => alert('Usuario registrado'))
+            .then ( r =>{
+                historial.push('/')
+            } )
             .catch (e => {
             if (e.code === 'auth/invalid-email') {
                 setMsgError('Formato de Email incorrecto')
@@ -23,7 +27,9 @@ const Login = () => {
 
     const loginDeUsuario = () => {
         auth.signInWithEmailAndPassword(email, pass)
-        .then( (r) => console.log(r))
+        .then( (r) => {
+            historial.push('/')
+        })
         .catch((err) =>{
             if(err.code === 'auth/wrong-password') {
                 setMsgError('La contraseña es incorrecta')
@@ -49,14 +55,14 @@ const Login = () => {
                         type="password"
                     />
                     <input 
-                        className='btn btn-dark btn-block mt-4'
+                        className='btn btn-dark btn-block mt-4 w-100'
                         value='Registrar Usuario'
                         type="submit"                   
                     />
                 </form>
                 <button 
                     onClick={loginDeUsuario}
-                    className="btn btn-success btn-block mt-4">
+                    className="btn btn-success btn-block mt-4 w-100">
                         Iniciar Sesión
                 </button>
                 {
